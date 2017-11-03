@@ -5,12 +5,11 @@ var clock = new THREE.Clock();
 
 var mixers = [];
 
+var animateobjects = [];
+
 init();
 
 function init() {
-
-//    var THREE = require('three')
-//    require('three-fbx-loader')(THREE)
 
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -48,15 +47,12 @@ function init() {
 
             var percentComplete = xhr.loaded / xhr.total * 100;
             console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
-
         }
-
     };
 
     var onError = function( xhr ) {
 
         console.error( xhr );
-
     };
 
     //terreng:
@@ -64,9 +60,10 @@ function init() {
     let terrengloader = new THREE.FBXLoader( manager );
     terrengloader.load( 'models/terrainmesh.FBX', function( object ) {
 
-        let terrenggeo = object.children[0].geometry;
+        let terrenggeo = object.children[0];
         terrenggeo.castShadow = true;
         terrenggeo.receiveShadow = true;
+
 
         /**
          object.mixer = new THREE.AnimationMixer( object );
@@ -75,14 +72,15 @@ function init() {
          var action = object.mixer.clipAction( object.animations[ 0 ] );
          action.play();
          */
-        object.receiveShadow = true;
+
         scene.add( object );
     }, onProgress, onError );
 
     let terrengsideloader = new THREE.FBXLoader( manager );
     terrengsideloader.load( 'models/terrainmesh-sides.FBX', function( object ) {
-        object.receiveShadow = false;
-        object.castShadow = false;
+        let terrengsidegeo = object.children[0]
+        terrengsidegeo.receiveShadow = false;
+        terrengsidegeo.castShadow = false;
 
         scene.add( object );
     }, onProgress, onError );
@@ -91,9 +89,11 @@ function init() {
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
-       let skallegeo = object.children[0].geometry;
+
+        let skallegeo = object.children[0];
        skallegeo.castShadow = true;
        skallegeo.receiveShadow = true;
+
        scene.add( object );
     }, onProgress, onError );
 
@@ -105,21 +105,15 @@ function init() {
 
     let akvarieloader = new THREE.FBXLoader( manager );
     akvarieloader.load( 'models/akvariemesh.FBX', function( object ) {
-        let akvariemodell = object.children[0].geometry;
+
+        let akvariemodell = object.children[0];
         akvariemodell.castShadow = false;
         akvariemodell.receiveShadow = false;
         object.children[0].material = akvariematerial;
+
         scene.add( object );
     }, onProgress, onError );
 
-/**
-     let akvarieloader = new THREE.FBXLoader( manager );
-     akvarieloader.load('models/akvariemesh.FBX', function( object ) {
-        let amaterial = akvariematerial;
-        let amesh = new THREE.Mesh(object, amaterial);
-        scene.add(amesh);
-    });
-*/
 
     //vann
 
@@ -131,6 +125,16 @@ function init() {
     scene.add( vann );
 
 
+    //sphere for skyggetest
+    let testspheregeo = new THREE.SphereGeometry(1.0,24,24);
+    let testspheremat = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.8,0.8,0.8) } );
+    let testsphere = new THREE.Mesh(testspheregeo, testspheremat);
+    testsphere.position.set(2.0,5.0,5.0);
+    testsphere.castShadow = true;
+    scene.add(testsphere);
+
+    testsphere.animate = function () { this.position.y -= 0.01; }
+    animateobjects.push(testsphere);
 
     //renderer
 
@@ -154,7 +158,7 @@ function init() {
 
     //Overall light:
 
-    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.45);
+    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
     hemlight.position.set(0, 1, 0);
     scene.add(hemlight);
 
@@ -181,28 +185,9 @@ function init() {
     let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
     scene.add( shadowhelper );
 
-
     animate();
 
 }
-/**
-function onReplaceTexture() {
-    var textureLoader = new THREE.TextureLoader();
-    textureLoader.setCrossOrigin("anonymous");
-    textureLoader.load('models/maps/akvarie_opac.jpg', function (texture) {
-
-        // mesh is a group contains multiple sub-objects. Traverse and apply texture to all.
-        mesh.traverse(function (child) {
-            if (child instanceof THREE.Mesh) {
-
-                // apply texture
-                child.material.map = texture;
-                child.material.needsUpdate = true;
-            }
-        });
-    });
-}
-*/
 
 function onWindowResize() {
 
@@ -213,14 +198,17 @@ function onWindowResize() {
 
 }
 
-//
 
 function animate() {
 
     requestAnimationFrame( animate );
 
-    // ved importert FBX-animasjon
+    for (let i = 0; i< animateobjects.length;i++){
+        animateobjects[i].animate();
+    }
 
+
+    // ved importert FBX-animasjon
      if ( mixers.length > 0 ) {
 
 					for ( var i = 0; i < mixers.length; i ++ ) {
@@ -230,8 +218,8 @@ function animate() {
 				}
 
     render();
-
 }
+
 
 function render() {
  //   console.log(camera.position.x +" "+camera.position.y +" "+camera.position.z);
