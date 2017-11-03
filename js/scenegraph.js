@@ -86,43 +86,46 @@ function init() {
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
-        object.castShadow = true;
+       // object.castShadow = true;
         scene.add( object );
     }, onProgress, onError );
 
     //akvarieglass
 
-    let akvarietexture = new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' );
-    let akvariematerial = new THREE.MeshBasicMaterial( { map: akvarietexture } );
+    let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
+    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture } );
+    akvariematerial.transparent = true;
 
     let akvarieloader = new THREE.FBXLoader( manager );
     akvarieloader.load( 'models/akvariemesh.FBX', function( object ) {
-//        object.material=akvariematerial;
-        object.castShadow = false;
-        object.transparent = true;
+        let akvariemodell = object.children[0].geometry;
+        akvariemodell.castShadow = false;
+        akvariemodell.receiveShadow = false;
+        object.children[0].material = akvariematerial;
         scene.add( object );
-        //object.material.transparent = true;
     }, onProgress, onError );
 
-    //vann
-
-    vanngeometry = new THREE.BoxGeometry( 10, 1, 20 );
-    vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 99.0 } );
-
-    vann = new THREE.Mesh( vanngeometry, vannmaterial );
-    vann.position.set(0.0,-0.39,0.0);
-    scene.add( vann );
-
 /**
-    var akvarieloader = new THREE.FBXLoader( manager );
-
-    akvarieloader.load('models/akvariemesh.FBX', function (object) {
-        var amaterial = new THREE.MeshBasicMaterial();
-        var amesh = new THREE.Mesh(object, amaterial);
+     let akvarieloader = new THREE.FBXLoader( manager );
+     akvarieloader.load('models/akvariemesh.FBX', function( object ) {
+        let amaterial = akvariematerial;
+        let amesh = new THREE.Mesh(object, amaterial);
         scene.add(amesh);
     });
 */
 
+    //vann
+
+    let vanngeometry = new THREE.BoxGeometry( 10, 1, 20 );
+    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 99.0 } );
+
+    let vann = new THREE.Mesh( vanngeometry, vannmaterial );
+    vann.position.set(0.0,-0.39,0.0);
+    scene.add( vann );
+
+
+
+    //renderer
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
