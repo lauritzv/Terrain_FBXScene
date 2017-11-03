@@ -19,7 +19,7 @@ function init() {
 
     scene = new THREE.Scene();
 
-    scene.background = new THREE.Color(0xa87b9b);
+    scene.background = new THREE.Color(0x1a535b);
 
     // grid
     var gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
@@ -63,6 +63,11 @@ function init() {
 
     let terrengloader = new THREE.FBXLoader( manager );
     terrengloader.load( 'models/terrainmesh.FBX', function( object ) {
+
+        let terrenggeo = object.children[0].geometry;
+        terrenggeo.castShadow = true;
+        terrenggeo.receiveShadow = true;
+
         /**
          object.mixer = new THREE.AnimationMixer( object );
          mixers.push( object.mixer );
@@ -86,8 +91,10 @@ function init() {
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
-       // object.castShadow = true;
-        scene.add( object );
+       let skallegeo = object.children[0].geometry;
+       skallegeo.castShadow = true;
+       skallegeo.receiveShadow = true;
+       scene.add( object );
     }, onProgress, onError );
 
     //akvarieglass
@@ -117,7 +124,7 @@ function init() {
     //vann
 
     let vanngeometry = new THREE.BoxGeometry( 10, 1, 20 );
-    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 99.0 } );
+    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5 } );
 
     let vann = new THREE.Mesh( vanngeometry, vannmaterial );
     vann.position.set(0.0,-0.39,0.0);
@@ -147,15 +154,14 @@ function init() {
 
     //Overall light:
 
-    hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.45);
     hemlight.position.set(0, 1, 0);
     scene.add(hemlight);
 
     //Directional Light:
 
-    dirlight = new THREE.DirectionalLight(0xffffff, 1.5);
+    let dirlight = new THREE.DirectionalLight(0xffffff, 1.5);
     dirlight.position.set(12.0, 3.0, 20.0);
-    //dirlight.target(0.0,0.0,0.0);
     dirlight.castShadow = true;
     scene.add(dirlight);
 
@@ -164,14 +170,16 @@ function init() {
     scene.add(dirlightTarget);
     dirlight.target = dirlightTarget;
     scene.add(dirlight.target);
+
+    //Dirlight shadowmap settings
     dirlight.shadow.camera.near = 10.0;
     dirlight.shadow.camera.far = 35.0;
-    dirlight.shadow.mapSize.width = 512;
-    dirlight.shadow.mapSize.height = 512;
+    dirlight.shadow.mapSize.width = 1024;
+    dirlight.shadow.mapSize.height = 1024;
 
     //Lys/skygge-hjelper for directional
     let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
-    scene.add( shadowhelper);
+    scene.add( shadowhelper );
 
 
     animate();
