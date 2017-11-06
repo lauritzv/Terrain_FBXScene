@@ -18,17 +18,11 @@ function init() {
 
     scene = new THREE.Scene();
 
-    scene.background = new THREE.Color(0x1a535b);
+//    scene.background = new THREE.Color(0x1a535b);
+    scene.background = new THREE.TextureLoader().load( 'models/maps/grad_bg.jpg' );
 
-    // grid
-    var gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
-    gridHelper.position.set( 0, - 0.04, 0 );
-    scene.add( gridHelper );
-    /**
-     // stats
-     stats = new Stats();
-     container.appendChild( stats.dom );
-     */
+
+
     // models
     var manager = new THREE.LoadingManager();
 
@@ -54,6 +48,7 @@ function init() {
 
         console.error( xhr );
     };
+
 
     //terreng:
 
@@ -85,6 +80,7 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 
+
     //skalle
 
     let skalleloader = new THREE.FBXLoader( manager );
@@ -96,6 +92,7 @@ function init() {
 
        scene.add( object );
     }, onProgress, onError );
+
 
     //akvarieglass
 
@@ -117,24 +114,14 @@ function init() {
 
     //vann
 
-    let vanngeometry = new THREE.BoxGeometry( 10, 1, 20 );
+    let vanngeometry = new THREE.BoxGeometry( 10, 1, 19.95 );
     let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5 } );
 
     let vann = new THREE.Mesh( vanngeometry, vannmaterial );
-    vann.position.set(0.0,-0.39,0.0);
+    vann.position.set(0.0,-0.39,-0.025);
     scene.add( vann );
 
 
-    //sphere for skyggetest
-    let testspheregeo = new THREE.SphereGeometry(1.0,24,24);
-    let testspheremat = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.8,0.8,0.8) } );
-    let testsphere = new THREE.Mesh(testspheregeo, testspheremat);
-    testsphere.position.set(2.0,5.0,5.0);
-    testsphere.castShadow = true;
-    scene.add(testsphere);
-
-    testsphere.animate = function () { this.position.y -= 0.01; }
-    animateobjects.push(testsphere);
 
     //renderer
 
@@ -149,12 +136,11 @@ function init() {
     // controls, camera
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.target.set( 0.0, 0.0, 0.0 );
-    camera.position.set(-12.8,15.9,-26.6);
+
+    camera.position.set(-8.8,10.9,-13.6);
     controls.update();
 
     window.addEventListener( 'resize', onWindowResize, false );
-
-
 
     //Overall light:
 
@@ -181,23 +167,55 @@ function init() {
     dirlight.shadow.mapSize.width = 1024;
     dirlight.shadow.mapSize.height = 1024;
 
-    //Lys/skygge-hjelper for directional
-    let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
-    scene.add( shadowhelper );
 
+    //toggle grid og shadowmap helper:
+    //helperObjects(dirlight);
+
+    //toggle sphere for testing av oppdatering av shadowmaps
+    testSphere();
+
+    //toggle tåke i scenen
     makeFog();
 
     animate();
 
-}
+} //init
 
-function makeFog()
-{
+
+function helperObjects(dirlight){
     "use strict";
 
-    var fog = new THREE.Fog("#ff00ff", 15, 30);
-    fog.name = "pink fog";
+     // grid
+     let gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
+     gridHelper.position.set( 0, - 0.04, 0 );
+     scene.add( gridHelper );
+
+    //Lys/skygge-hjelper for directional
+    let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
+    scene.add( shadowhelper );
+}
+
+function makeFog() {
+    "use strict";
+
+    let fog = new THREE.Fog("#efa3a5", 15, 35);
+    fog.name = "pink-ish fog";
     scene.fog = fog;
+}
+
+//sphere for test av skygger
+function testSphere(){
+    "use strict";
+
+    let testspheregeo = new THREE.SphereGeometry(1.0,24,24);
+    let testspheremat = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.1,0.3,0.1) } );
+    let testsphere = new THREE.Mesh(testspheregeo, testspheremat);
+    testsphere.position.set(2.0,5.0,5.0);
+    testsphere.castShadow = true;
+    scene.add(testsphere);
+
+    testsphere.animate = function () { this.position.y -= 0.01; }
+    animateobjects.push(testsphere);
 }
 
 function onWindowResize() {
@@ -210,12 +228,9 @@ function onWindowResize() {
 }
 
 
-
-
 function animate() {
 
     requestAnimationFrame( animate );
-
 
     for (let i = 0; i< animateobjects.length;i++){
         animateobjects[i].animate();
