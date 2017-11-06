@@ -214,7 +214,7 @@ function testSphere(){
     testsphere.castShadow = true;
     scene.add(testsphere);
 
-    testsphere.animate = function () { this.position.y -= 0.01; }
+    testsphere.animate = function () { this.rotation.y -= 0.01; this.position.y+=0.01 * Math.sin(this.rotation.y); }
     animateobjects.push(testsphere);
 }
 
@@ -231,6 +231,9 @@ function onWindowResize() {
 function animate() {
 
     requestAnimationFrame( animate );
+
+    scene.fog.color = getNextColor();
+
 
     for (let i = 0; i< animateobjects.length;i++){
         animateobjects[i].animate();
