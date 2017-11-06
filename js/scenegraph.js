@@ -185,8 +185,19 @@ function init() {
     let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
     scene.add( shadowhelper );
 
+    makeFog();
+
     animate();
 
+}
+
+function makeFog()
+{
+    "use strict";
+
+    var fog = new THREE.Fog("#ff00ff", 15, 30);
+    fog.name = "pink fog";
+    scene.fog = fog;
 }
 
 function onWindowResize() {
@@ -199,9 +210,12 @@ function onWindowResize() {
 }
 
 
+
+
 function animate() {
 
     requestAnimationFrame( animate );
+
 
     for (let i = 0; i< animateobjects.length;i++){
         animateobjects[i].animate();
