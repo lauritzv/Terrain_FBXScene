@@ -75,11 +75,12 @@ function init() {
 */
     //terreng resculpt
 
-    let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DM.jpg' ));
+    let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM.jpg' ));
+    //let terrengdisp = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DM.jpg' ));
     let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
 
     let terrengmat = new THREE.MeshPhongMaterial( {
-        color: new THREE.Color(170.0/255, 240.0/255, 110.0/255),
+        //color: new THREE.Color(170.0/255, 240.0/255, 110.0/255),
         map: terrengdiff,
         normalMap: terrengnorm
     });
