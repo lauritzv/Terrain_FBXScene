@@ -51,6 +51,7 @@ function init() {
 
     // MODELS:
 
+/**
     //terreng:
 
     let terrengloader = new THREE.FBXLoader( manager );
@@ -61,17 +62,42 @@ function init() {
         terrenggeo.receiveShadow = true;
 
 
-        /**
-         object.mixer = new THREE.AnimationMixer( object );
-         mixers.push( object.mixer );
 
-         var action = object.mixer.clipAction( object.animations[ 0 ] );
-         action.play();
-         */
+         //object.mixer = new THREE.AnimationMixer( object );
+         //mixers.push( object.mixer );
+
+         //var action = object.mixer.clipAction( object.animations[ 0 ] );
+         //action.play();
+
+
+        scene.add( object );
+    }, onProgress, onError );
+*/
+    //terreng resculpt
+
+    let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DM.jpg' ));
+    let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
+
+    let terrengmat = new THREE.MeshPhongMaterial( {
+        color: new THREE.Color(170.0/255, 240.0/255, 110.0/255),
+        map: terrengdiff,
+        normalMap: terrengnorm
+    });
+
+
+    let terrengloader = new THREE.FBXLoader( manager );
+    terrengloader.load( 'models/terrain_resculpt.FBX', function( object ) {
+
+        let terrenggeo = object.children[0];
+        terrenggeo.material = terrengmat;
+        terrenggeo.castShadow = true;
+        terrenggeo.receiveShadow = true;
 
         scene.add( object );
     }, onProgress, onError );
 
+
+/**
     let terrengsideloader = new THREE.FBXLoader( manager );
     terrengsideloader.load( 'models/terrainmesh-sides.FBX', function( object ) {
         let terrengsidegeo = object.children[0]
@@ -80,7 +106,7 @@ function init() {
 
         scene.add( object );
     }, onProgress, onError );
-
+*/
 
 //skalle
 
@@ -135,7 +161,7 @@ function init() {
         let akvariemodell = object.children[0];
         akvariemodell.castShadow = false;
         akvariemodell.receiveShadow = false;
-        object.children[0].material = akvariematerial;
+        akvariemodell.material = akvariematerial;
 
         scene.add( object );
     }, onProgress, onError );
@@ -144,8 +170,8 @@ function init() {
     //vann
 
     let vanngeometry = new THREE.BoxGeometry( 10, 1, 19.95 );
-    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5 } );
-
+    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5, opacity: 0.5 } );
+    vannmaterial.transparent = true;
     let vann = new THREE.Mesh( vanngeometry, vannmaterial );
     vann.position.set(0.0,-0.39,-0.025);
     scene.add( vann );
@@ -179,7 +205,7 @@ function init() {
     //addGrid();
 
     //toggle sphere for testing av oppdatering av shadowmaps
-    testSphere();
+    //testSphere();
 
     //toggle tåke i scenen
     makeFog();
@@ -194,7 +220,7 @@ function setupLights() {
     "use strict";
     //Overall light:
 
-    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
+    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.35);
     hemlight.position.set(0, 1, 0);
     scene.add(hemlight);
 
@@ -212,13 +238,24 @@ function setupLights() {
     scene.add(dirlight.target);
 
     //Dirlight shadowmap settings
+
+    dirlight.shadowCameraLeft = -13;
+    dirlight.shadowCameraRight = 13;
+    dirlight.shadowCameraTop = 3;
+    dirlight.shadowCameraBottom = -3;
+
     dirlight.shadow.camera.near = 10.0;
     dirlight.shadow.camera.far = 35.0;
     dirlight.shadow.mapSize.width = 1024;
     dirlight.shadow.mapSize.height = 1024;
 
+    dirlightTarget.animate = function () { this.rotation.y -= 0.01; this.position.z+=0.05 * Math.sin(this.rotation.y); }
+    animateobjects.push(dirlightTarget);
+
     //toggle shadowMapHelper:
     shadowHelper(dirlight);
+
+
 }
 
 function shadowHelper(dirlight) {
