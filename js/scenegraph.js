@@ -73,14 +73,16 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 */
+
     //terreng resculpt
 
+    //let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM2.jpg' ));
     let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM.jpg' ));
     //let terrengdisp = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DM.jpg' ));
     let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
 
     let terrengmat = new THREE.MeshPhongMaterial( {
-        //color: new THREE.Color(170.0/255, 240.0/255, 110.0/255),
+        color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
         map: terrengdiff,
         normalMap: terrengnorm
     });
@@ -109,7 +111,7 @@ function init() {
     }, onProgress, onError );
 */
 
-//skalle
+    //skalle
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
@@ -149,6 +151,20 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 
+
+/**
+    let wallbridgeloader = new THREE.FBXLoader( manager );
+    wallbridgeloader.load( 'models/wall-bridge-mockups.FBX', function( object ) {
+        let wallbridgegeo1 = object.children[0];
+        let wallbridgegeo2 = object.children[1]
+        wallbridgegeo1.receiveShadow = true;
+        wallbridgegeo2.castShadow = true;
+        wallbridgegeo1.receiveShadow = true;
+        wallbridgegeo2.castShadow = true;
+
+        scene.add( object );
+    }, onProgress, onError );
+*/
 
     //akvarieglass
 
@@ -247,9 +263,10 @@ function setupLights() {
 
     dirlight.shadow.camera.near = 10.0;
     dirlight.shadow.camera.far = 35.0;
-    dirlight.shadow.mapSize.width = 1024;
+    dirlight.shadow.mapSize.width = 2048;
     dirlight.shadow.mapSize.height = 1024;
 
+    //dirlight animasjon:
     dirlightTarget.animate = function () { this.rotation.y -= 0.01; this.position.z+=0.05 * Math.sin(this.rotation.y); }
     animateobjects.push(dirlightTarget);
 
@@ -269,7 +286,6 @@ function shadowHelper(dirlight) {
 function addGrid(){
     "use strict";
 
-     // grid
      let gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
      gridHelper.position.set( 0, - 0.04, 0 );
      scene.add( gridHelper );
