@@ -23,7 +23,6 @@ function init() {
 
 
 
-    // models
     var manager = new THREE.LoadingManager();
 
     //kommentert bort pga import-spam i console-loggen
@@ -49,6 +48,8 @@ function init() {
         console.error( xhr );
     };
 
+
+    // MODELS:
 
     //terreng:
 
@@ -81,16 +82,44 @@ function init() {
     }, onProgress, onError );
 
 
-    //skalle
+//skalle
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
 
         let skallegeo = object.children[0];
-       skallegeo.castShadow = true;
-       skallegeo.receiveShadow = true;
+        skallegeo.castShadow = true;
+        skallegeo.receiveShadow = true;
 
-       scene.add( object );
+        /**
+
+        let vshader = loadFileAJAX("shaders/skull_vshader.glsl");
+        let fshader = loadFileAJAX("shaders/skull_fshader.glsl");
+
+        skallegeo.material = new THREE.ShaderMaterial({
+            vertexShader: vshader,
+            fragmentShader: fshader
+        });
+        */
+
+
+        /**
+         let vshader = loadFileAJAX("shaders/meshphong_vert.glsl");
+         let fshader = loadFileAJAX("shaders/meshphong_frag.glsl");
+
+         skallegeo.material = new THREE.ShaderMaterial({
+
+           vertexShader: vshader,
+           fragmentShader: fshader
+           //attributes: {},
+           //uniforms: uniforms,
+           //lights:true
+           //fog:true
+        });
+         //skallegeo.material.lights = true;
+         */
+
+        scene.add( object );
     }, onProgress, onError );
 
 
@@ -142,6 +171,27 @@ function init() {
 
     window.addEventListener( 'resize', onWindowResize, false );
 
+
+
+    setupLights();
+
+    //toggle grid:
+    //addGrid();
+
+    //toggle sphere for testing av oppdatering av shadowmaps
+    testSphere();
+
+    //toggle tåke i scenen
+    makeFog();
+
+    animate();
+
+} //init
+
+
+
+function setupLights() {
+    "use strict";
     //Overall light:
 
     let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.5);
@@ -167,32 +217,24 @@ function init() {
     dirlight.shadow.mapSize.width = 1024;
     dirlight.shadow.mapSize.height = 1024;
 
+    //toggle shadowMapHelper:
+    shadowHelper(dirlight);
+}
 
-    //toggle grid og shadowmap helper:
-    //helperObjects(dirlight);
+function shadowHelper(dirlight) {
+    "use strict";
+    //Lys/skygge-hjelper for directional
+    let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
+    scene.add( shadowhelper );
+}
 
-    //toggle sphere for testing av oppdatering av shadowmaps
-    testSphere();
-
-    //toggle tåke i scenen
-    makeFog();
-
-    animate();
-
-} //init
-
-
-function helperObjects(dirlight){
+function addGrid(){
     "use strict";
 
      // grid
      let gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
      gridHelper.position.set( 0, - 0.04, 0 );
      scene.add( gridHelper );
-
-    //Lys/skygge-hjelper for directional
-    let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
-    scene.add( shadowhelper );
 }
 
 function makeFog() {
@@ -210,7 +252,7 @@ function testSphere(){
     let testspheregeo = new THREE.SphereGeometry(1.0,24,24);
     let testspheremat = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.1,0.3,0.1) } );
     let testsphere = new THREE.Mesh(testspheregeo, testspheremat);
-    testsphere.position.set(2.0,5.0,5.0);
+    testsphere.position.set(2.0,3.0,5.0);
     testsphere.castShadow = true;
     scene.add(testsphere);
 
@@ -227,7 +269,6 @@ function onWindowResize() {
 
 }
 
-
 function animate() {
 
     requestAnimationFrame( animate );
@@ -239,15 +280,14 @@ function animate() {
         animateobjects[i].animate();
     }
 
-
     // ved importert FBX-animasjon
      if ( mixers.length > 0 ) {
 
-					for ( var i = 0; i < mixers.length; i ++ ) {
+        for ( var i = 0; i < mixers.length; i ++ ) {
 
-						mixers[ i ].update( clock.getDelta() );
-					}
-				}
+            mixers[ i ].update( clock.getDelta() );
+        }
+    }
 
     render();
 }
