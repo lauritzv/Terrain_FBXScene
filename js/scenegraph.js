@@ -242,6 +242,9 @@ function init() {
     //toggle tåke i scenen
     makeFog();
 
+    //legger til en skybox i scenen
+    scene.add(new Skybox("models/skybox/stue.jpg"));
+
     animate();
 
 } //init
