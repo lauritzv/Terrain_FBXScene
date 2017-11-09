@@ -1,6 +1,7 @@
 var container, controls;
 var camera, scene, renderer, light;
 
+var colorLooper;
 var clock = new THREE.Clock();
 
 var mixers = [];
@@ -11,12 +12,15 @@ init();
 
 function init() {
 
+
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 
     scene = new THREE.Scene();
+
+    colorLooper = new ColorLooper(clock);
 
 //    scene.background = new THREE.Color(0x1a535b);
     scene.background = new THREE.TextureLoader().load( 'models/maps/grad_bg.jpg' );
@@ -205,12 +209,23 @@ function init() {
 
     container.appendChild( renderer.domElement );
 
-    // controls, camera
-    controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.target.set( 0.0, 0.0, 0.0 );
 
     camera.position.set(-8.8,10.9,-13.6);
-    controls.update();
+
+    //orbit control
+    //controls = new THREE.OrbitControls( camera, renderer.domElement );
+    //controls.target.set( 0.0, 0.0, 0.0 );
+    //controls.update();
+
+    //first person control (flying) - husk å inkludér den utkommenterte linjen i render()
+    controls = new THREE.FirstPersonControls(camera);
+    controls.movementSpeed = 5;
+    controls.lookSpeed = 0.1;
+    controls.animate = function(){ this.update(clock.getDelta()) };
+    animateobjects.push(controls);
+
+
+
 
     window.addEventListener( 'resize', onWindowResize, false );
 
@@ -327,7 +342,7 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-    scene.fog.color = getNextColor();
+    scene.fog.color = colorLooper.getNextColor();
 
 
     for (let i = 0; i< animateobjects.length;i++){
