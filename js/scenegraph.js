@@ -197,6 +197,11 @@ function init() {
     vann.position.set(0.0,-0.39,-0.025);
     scene.add( vann );
 
+    let gulv = vann.clone();
+    gulv.material = new THREE.MeshPhongMaterial( {color: 0x000000,specular: 0.5 } );
+    gulv.translateY(-0.4);
+    scene.add(gulv);
+
 
 
     //renderer
@@ -210,7 +215,7 @@ function init() {
     container.appendChild( renderer.domElement );
 
 
-    camera.position.set(-8.8,10.9,-13.6);
+    camera.position.set(0,0,-10);
 
     //orbit control
     //controls = new THREE.OrbitControls( camera, renderer.domElement );

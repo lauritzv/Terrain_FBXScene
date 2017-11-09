@@ -10,7 +10,6 @@ class Skybox{
 
 
         this.skyGeometry = new THREE.SphereGeometry(50, 32, 32);
-        this.skyGeometry.doubleSided = true;
         let skyTexture = new THREE.TextureLoader().load(this.pictureURL);
         this.skyMaterial = new THREE.MeshPhongMaterial({ map: skyTexture, fog: false });
         this.skyMaterial.side = THREE.BackSide;
