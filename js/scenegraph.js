@@ -181,7 +181,9 @@ function init() {
     }, onProgress, onError );
 
 
-/**
+
+
+    /**
     let wallbridgeloader = new THREE.FBXLoader( manager );
     wallbridgeloader.load( 'models/wall-bridge-mockups.FBX', function( object ) {
         let wallbridgegeo1 = object.children[0];
@@ -195,22 +197,8 @@ function init() {
     }, onProgress, onError );
 */
 
-    //akvarieglass
 
-    let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
-    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture } );
-    akvariematerial.transparent = true;
 
-    let akvarieloader = new THREE.FBXLoader( manager );
-    akvarieloader.load( 'models/akvariemesh.FBX', function( object ) {
-
-        let akvariemodell = object.children[0];
-        akvariemodell.castShadow = false;
-        akvariemodell.receiveShadow = false;
-        akvariemodell.material = akvariematerial;
-
-        scene.add( object );
-    }, onProgress, onError );
 
 
     //vann
@@ -229,11 +217,43 @@ function init() {
 
 
 
+    //akvarieglass
+
+    let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
+    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture, opaque:0.5} );
+    akvariematerial.transparent = true;
+
+    let akvarieloader = new THREE.FBXLoader( manager );
+    akvarieloader.load( 'models/akvariemesh.FBX', function( object ) {
+
+        let akvariemodell = object.children[0];
+        akvariemodell.castShadow = false;
+        akvariemodell.receiveShadow = false;
+        akvariemodell.material = akvariematerial;
+
+        scene.add( object );
+    }, onProgress, onError );
+
+
+    //TODO fikse problem med dybde, gress blir usynlig utenfor glasset, problemet virker ut til å være depthbuffer pga om vi setter depthwriter: false på glasset kan en se gresset gjennom glasset,
+    //men gresset blir da ikke påvirket av glasset i det hele tatt og ser unaturlig ut.
+    //Billboard for gress
+    var spriteMap = new THREE.TextureLoader().load( 'models/grass/grass.png' );
+
+    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff} );
+
+    var grassSprite = new THREE.Sprite( spriteMaterial );
+    grassSprite.scale.set(1, 1, 1)
+    grassSprite.position.set(2,2,2);
+
+    scene.add( grassSprite );
+
     //renderer
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.sortObjects = false;
 
     renderer.shadowMap.enabled = true;
 
@@ -241,7 +261,7 @@ function init() {
 
 
 //    camera.position.set(0,0,-10);
-    camera.position.set(-8.8,10.9,-13.6);
+    camera.position.set(-5,5,-5);
 //    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
