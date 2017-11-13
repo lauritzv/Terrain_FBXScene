@@ -91,7 +91,6 @@ function init() {
         normalMap: terrengnorm
     });
 
-
     let terrengloader = new THREE.FBXLoader( manager );
     terrengloader.load( 'models/terrain_resculpt.FBX', function( object ) {
 
@@ -99,6 +98,32 @@ function init() {
         terrenggeo.material = terrengmat;
         terrenggeo.castShadow = true;
         terrenggeo.receiveShadow = true;
+
+        scene.add( object );
+    }, onProgress, onError );
+
+    //tree1
+
+    let tree1diff = (new THREE.TextureLoader().load( 'models/maps/tree1_DiffM.jpg' ));
+    let tree1norm = (new THREE.TextureLoader().load( 'models/maps/tree1_NM.jpg' ));
+
+    let tree1mat = new THREE.MeshPhongMaterial( {
+        //color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
+        map: tree1diff,
+        normalMap: tree1norm
+    });
+
+    let tree1loader = new THREE.FBXLoader( manager );
+    tree1loader.load( 'models/tree1_med.FBX', function( object ) {
+
+        let tree1geo = object.children[0];
+        tree1geo.material = tree1mat;
+        tree1geo.castShadow = true;
+        tree1geo.receiveShadow = true;
+
+        tree1geo.position.set(0.0,1,0.0);
+        tree1geo.scale.set(0.5,0.5,0.5);
+        //= THREE.Vector3(0.3,0.3,0.3);
 
         scene.add( object );
     }, onProgress, onError );
@@ -197,6 +222,11 @@ function init() {
     vann.position.set(0.0,-0.39,-0.025);
     scene.add( vann );
 
+    let gulv = vann.clone();
+    gulv.material = new THREE.MeshPhongMaterial( {color: 0x000000,specular: 0.5 } );
+    gulv.translateY(-0.4);
+    scene.add(gulv);
+
 
 
     //renderer
@@ -210,7 +240,9 @@ function init() {
     container.appendChild( renderer.domElement );
 
 
+//    camera.position.set(0,0,-10);
     camera.position.set(-8.8,10.9,-13.6);
+//    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
     //controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -243,7 +275,7 @@ function init() {
     makeFog();
 
     //legger til en skybox i scenen
-    scene.add(new Skybox("models/skybox/stue.jpg"));
+    scene.add(new Skybox());
 
     animate();
 
@@ -274,10 +306,10 @@ function setupLights() {
 
     //Dirlight shadowmap settings
 
-    dirlight.shadowCameraLeft = -13;
-    dirlight.shadowCameraRight = 13;
-    dirlight.shadowCameraTop = 3;
-    dirlight.shadowCameraBottom = -3;
+    dirlight.shadow.camera.left = -13;
+    dirlight.shadow.camera.right = 13;
+    dirlight.shadow.camera.top = 3;
+    dirlight.shadow.camera.bottom = -3;
 
     dirlight.shadow.camera.near = 10.0;
     dirlight.shadow.camera.far = 35.0;
