@@ -5,8 +5,10 @@ class Treeball{
         this.clock = clock;
 
         this.tree = tree;
+        let box = new THREE.Box3().setFromObject(tree);
+        this.treeHeight = box.max.y - box.min.y;
 
-        this.geometry = new THREE.SphereGeometry(0.2, 24, 24);
+        this.geometry = new THREE.SphereGeometry(0.03, 24, 24);
         this.material = new THREE.MeshPhongMaterial( {color: new THREE.Color(Math.random(), Math.random(), Math.random()) } );
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
@@ -33,6 +35,7 @@ class Treeball{
         this.mesh.SECONDS_IN_A_LOOP = this.SECONDS_IN_A_LOOP;
         this.mesh.curve = this.curve;
         this.mesh.clock = this.clock;
+        this.mesh.treeHeight = this.treeHeight;
 
         //returns the mesh
         return this.mesh;
@@ -47,8 +50,9 @@ class Treeball{
      */
     move(){
         this.position.copy(this.tree.position);
+        this.translateY(this.treeHeight);
 
         let vector = this.curve.getPoint((this.clock.getElapsedTime() % 5) / 5);
-        this.position.addScaledVector(vector, 2);
+        this.position.addScaledVector(vector, 0.1);
     }
 }
