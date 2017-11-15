@@ -22,7 +22,6 @@ function init() {
 
     colorLooper = new ColorLooper(clock);
 
-//    scene.background = new THREE.Color(0x1a535b);
     scene.background = new THREE.TextureLoader().load( 'models/maps/grad_bg.jpg' );
 
 
@@ -55,34 +54,9 @@ function init() {
 
     // MODELS:
 
-/**
-    //terreng:
+    //terreng
 
-    let terrengloader = new THREE.FBXLoader( manager );
-    terrengloader.load( 'models/terrainmesh.FBX', function( object ) {
-
-        let terrenggeo = object.children[0];
-        terrenggeo.castShadow = true;
-        terrenggeo.receiveShadow = true;
-
-
-
-         //object.mixer = new THREE.AnimationMixer( object );
-         //mixers.push( object.mixer );
-
-         //var action = object.mixer.clipAction( object.animations[ 0 ] );
-         //action.play();
-
-
-        scene.add( object );
-    }, onProgress, onError );
-*/
-
-    //terreng resculpt
-
-    //let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM2.jpg' ));
     let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM.jpg' ));
-    //let terrengdisp = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DM.jpg' ));
     let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
 
     let terrengmat = new THREE.MeshPhongMaterial( {
@@ -108,7 +82,6 @@ function init() {
     let tree1norm = (new THREE.TextureLoader().load( 'models/maps/tree1_NM.jpg' ));
 
     let tree1mat = new THREE.MeshPhongMaterial( {
-        //color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
         map: tree1diff,
         normalMap: tree1norm
     });
@@ -123,22 +96,34 @@ function init() {
 
         tree1geo.position.set(0.0,1,0.0);
         tree1geo.scale.set(0.5,0.5,0.5);
-        //= THREE.Vector3(0.3,0.3,0.3);
+
+        //object.mixer = new THREE.AnimationMixer( object );
+        //mixers.push( object.mixer );
+
+        //var action = object.mixer.clipAction( object.animations[ 0 ] );
+        //action.play();
 
         scene.add( object );
     }, onProgress, onError );
 
 
-/**
+    let terrengsidediff = (new THREE.TextureLoader().load( 'models/maps/terrain_sides-DiffM.jpg' ));
     let terrengsideloader = new THREE.FBXLoader( manager );
-    terrengsideloader.load( 'models/terrainmesh-sides.FBX', function( object ) {
+    terrengsideloader.load( 'models/terrain_resculpt-sides.FBX', function( object ) {
         let terrengsidegeo = object.children[0]
+
+        let terrengsidemat = new THREE.MeshPhongMaterial( {
+            color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
+            map: terrengsidediff,
+        });
+
+        terrengsidegeo.material = terrengsidemat;
         terrengsidegeo.receiveShadow = false;
         terrengsidegeo.castShadow = false;
 
         scene.add( object );
     }, onProgress, onError );
-*/
+
 
     //skalle
 
@@ -202,20 +187,14 @@ function init() {
 
 
     //vann
-
+/**
     let vanngeometry = new THREE.BoxGeometry( 10, 1, 19.95 );
     let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5, opacity: 0.5 } );
     vannmaterial.transparent = true;
     let vann = new THREE.Mesh( vanngeometry, vannmaterial );
     vann.position.set(0.0,-0.39,-0.025);
     scene.add( vann );
-
-    let gulv = vann.clone();
-    gulv.material = new THREE.MeshPhongMaterial( {color: 0x000000,specular: 0.5 } );
-    gulv.translateY(-0.4);
-    scene.add(gulv);
-
-
+*/
 
     //akvarieglass
 
@@ -234,7 +213,7 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 
-
+/**
     //TODO fikse problem med dybde, gress blir usynlig utenfor glasset, problemet virker ut til å være depthbuffer pga om vi setter depthwriter: false på glasset kan en se gresset gjennom glasset,
     //men gresset blir da ikke påvirket av glasset i det hele tatt og ser unaturlig ut.
     //Billboard for gress
@@ -247,6 +226,7 @@ function init() {
     grassSprite.position.set(2,2,2);
 
     scene.add( grassSprite );
+*/
 
     //renderer
 
@@ -260,7 +240,6 @@ function init() {
     container.appendChild( renderer.domElement );
 
 
-//    camera.position.set(0,0,-10);
     camera.position.set(-5,5,-5);
 //    camera.rotation.set(0.0,-0.5,0.0);
 
