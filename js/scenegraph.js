@@ -270,6 +270,18 @@ function init() {
     //toggle sphere for testing av oppdatering av shadowmaps
     //testSphere();
 
+    let bird = new Bird();
+    animateobjects.push(bird);
+    scene.add(bird);
+
+    for(let i=0;i<5;i++){
+        let treeball = new Treeball(bird, clock);
+        animateobjects.push(treeball);
+        scene.add(treeball);
+    }
+
+
+
     //toggle tåke i scenen
     makeFog();
 
