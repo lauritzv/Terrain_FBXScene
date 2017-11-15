@@ -87,6 +87,7 @@ function init() {
         normalMap: tree1norm
     });
 
+    /**
     let tree1loader = new THREE.FBXLoader( manager );
     tree1loader.load( 'models/tree1_med.FBX', function( object ) {
 
@@ -103,6 +104,24 @@ function init() {
 
         //var action = object.mixer.clipAction( object.animations[ 0 ] );
         //action.play();
+
+        scene.add( object );
+    }, onProgress, onError );
+*/
+    // grabby tree lowpoly
+    let grabbytreeloader = new THREE.FBXLoader( manager );
+    grabbytreeloader.load( 'models/grabbytree.FBX', function( object ) {
+
+        let grabbytreegeo = object.children[0];
+        grabbytreegeo.castShadow = true;
+        grabbytreegeo.receiveShadow = true;
+        grabbytreegeo.position.set(0.0,1.15,0.0);
+
+        for(let i=0;i<5;i++){
+            let treeball = new Treeball(grabbytreegeo, clock);
+            animateobjects.push(treeball);
+            scene.add(treeball);
+        }
 
         scene.add( object );
     }, onProgress, onError );
