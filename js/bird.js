@@ -23,11 +23,6 @@ class Bird{
     }
 
     animate(){
-
-        if(Math.random() < 0.1){
-            console.log(this.position);
-        }
-
         this.rotate();
         this.move();
     }
