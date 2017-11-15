@@ -1,14 +1,14 @@
 class Bird{
 
-    constructor(){
-        this.speed = 0.04;
+    constructor(speed = 0.04){
+        this.speed = speed;
 
         //this.geometry = new THREE.SphereGeometry(1.0,24,24);
-        this.geometry = new THREE.BoxGeometry(1, 1, 2);
-        this.material = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.1,0.3,0.1) } );
+        this.geometry = new THREE.BoxGeometry(0.2, 0.2, 2);
+        this.material = new THREE.MeshPhongMaterial( {color: new THREE.Color(0, 0, 0.8) } );
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-        this.mesh.position.set(2.0,3.0,5.0);
+        this.mesh.position.set(10.0,4.0,5.0);
         this.mesh.castShadow = true;
 
         //copies all the functions from Bird to Bird.mesh
@@ -23,6 +23,11 @@ class Bird{
     }
 
     animate(){
+
+        if(Math.random() < 0.1){
+            console.log(this.position);
+        }
+
         this.rotate();
         this.move();
     }
