@@ -1,5 +1,5 @@
 var container, controls;
-var camera, scene, renderer, light;
+var camera, scene, renderer, light, cubeCam;
 
 var colorLooper;
 var clock = new THREE.Clock();
@@ -19,6 +19,7 @@ function init() {
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
 
     scene = new THREE.Scene();
+
 
     colorLooper = new ColorLooper(clock);
 
@@ -206,14 +207,17 @@ function init() {
 
 
     //vann
-/**
-    let vanngeometry = new THREE.BoxGeometry( 10, 1, 19.95 );
-    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0x6bc8c8,specular: 0.5, opacity: 0.5 } );
+
+    cubeCam = new THREE.CubeCamera(1,100000, 128);
+    scene.add(cubeCam);
+
+    let vanngeometry = new THREE.BoxGeometry( 9.69, 1, 19.4 );
+    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0xffaadd/*0x6bc8c8*/, envMap: cubeCam.renderTarget, specular: 0.8, opacity: 0.5, reflectivity: 0.8 } );
     vannmaterial.transparent = true;
-    let vann = new THREE.Mesh( vanngeometry, vannmaterial );
-    vann.position.set(0.0,-0.39,-0.025);
+    let vann = new THREE.Mesh( vanngeometry, vannmaterial);
+    vann.position.set(0.0,-0.39,-0.0);
     scene.add( vann );
-*/
+
 
     //akvarieglass
 
@@ -429,5 +433,8 @@ function animate() {
 
 function render() {
  //   console.log(camera.position.x +" "+camera.position.y +" "+camera.position.z);
+
+    cubeCam.update( renderer, scene );
+
     renderer.render( scene, camera );
 }
