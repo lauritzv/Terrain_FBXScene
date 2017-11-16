@@ -61,7 +61,7 @@ function init() {
     let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
 
     let terrengmat = new THREE.MeshPhongMaterial( {
-        color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
+        color: new THREE.Color(0.67, 1.0, 0.67), //litt grønntinting av fargen
         map: terrengdiff,
         normalMap: terrengnorm
     });
@@ -77,6 +77,7 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 
+    /**
     //tree1
 
     let tree1diff = (new THREE.TextureLoader().load( 'models/maps/tree1_DiffM.jpg' ));
@@ -87,7 +88,7 @@ function init() {
         normalMap: tree1norm
     });
 
-    /**
+
     let tree1loader = new THREE.FBXLoader( manager );
     tree1loader.load( 'models/tree1_med.FBX', function( object ) {
 
@@ -109,13 +110,23 @@ function init() {
     }, onProgress, onError );
 */
     // grabby tree lowpoly
+    let grabbytreediff = (new THREE.TextureLoader().load( 'models/maps/grabbytree_DiffM.jpg' ));
+    let grabbytreenorm = (new THREE.TextureLoader().load( 'models/maps/grabbytree_NM.jpg' ));
+    let grabbytreemat = new THREE.MeshPhongMaterial( {
+        map: grabbytreediff,
+        normalMap: grabbytreenorm,
+        shininess: 85.0,
+        specular: new THREE.Color( 0.2,0.1,0.2 )
+    });
     let grabbytreeloader = new THREE.FBXLoader( manager );
     grabbytreeloader.load( 'models/grabbytree.FBX', function( object ) {
 
         let grabbytreegeo = object.children[0];
+        grabbytreegeo.material = grabbytreemat;
         grabbytreegeo.castShadow = true;
         grabbytreegeo.receiveShadow = true;
         grabbytreegeo.position.set(0.0,1.15,0.0);
+
 
         for(let i=0;i<5;i++){
             let treeball = new Treeball(grabbytreegeo, clock);
