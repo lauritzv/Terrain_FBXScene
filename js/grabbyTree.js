@@ -9,7 +9,7 @@ function grabbyTree (posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
             shininess: 85.0,
             specular: new THREE.Color( 0.2,0.1,0.2 )
         });
-        //this.grabbytreegeo;
+
         let grabbytreeloader = new THREE.FBXLoader( manager );
         grabbytreeloader.load( 'models/grabbytree.FBX', function( object ) {
 
@@ -19,9 +19,7 @@ function grabbyTree (posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
             grabbytreegeo.receiveShadow = true;
             grabbytreegeo.position.set(posx,posy,posz);
             grabbytreegeo.scale.set(scax,scay,scaz);
-            grabbytreegeo.rotateX(rotx); grabbytreegeo.rotateX(roty); grabbytreegeo.rotateX(rotz);
-//            console.log(grabbytreegeo.rotation.x, grabbytreegeo.rotation.x, grabbytreegeo.rotation.z)
-
+            grabbytreegeo.rotateX(rotx); grabbytreegeo.rotateY(roty); grabbytreegeo.rotateZ(rotz);
 
              for(let i=0;i<5;i++){
                 let treeball = new Treeball(grabbytreegeo, clock);
