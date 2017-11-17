@@ -1,12 +1,14 @@
-var container, controls;
-var camera, scene, renderer, light, cubeCam;
+let container, controls;
+let camera, scene, renderer, light, cubeCam;
 
-var colorLooper;
-var clock = new THREE.Clock();
+let colorLooper;
+let clock = new THREE.Clock();
 
-var mixers = [];
+let mixers = [];
+let animateobjects = [];
 
-var animateobjects = [];
+let manager = new THREE.LoadingManager();
+let onProgress,onError;
 
 init();
 
@@ -17,17 +19,12 @@ function init() {
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
-
     scene = new THREE.Scene();
-
 
     colorLooper = new ColorLooper(clock);
 
     scene.background = new THREE.TextureLoader().load( 'models/maps/grad_bg.jpg' );
 
-
-
-    var manager = new THREE.LoadingManager();
 
     //kommentert bort pga import-spam i console-loggen
     /**
@@ -38,7 +35,7 @@ function init() {
     };
 */
 
-    var onProgress = function( xhr ) {
+    onProgress = function( xhr ) {
 
         if ( xhr.lengthComputable ) {
 
@@ -47,7 +44,7 @@ function init() {
         }
     };
 
-    var onError = function( xhr ) {
+    onError = function( xhr ) {
 
         console.error( xhr );
     };
@@ -56,6 +53,7 @@ function init() {
     // MODELS:
 
     //terreng
+    //TODO terreng til klasse
 
     let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM.jpg' ));
     let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
@@ -109,33 +107,15 @@ function init() {
         scene.add( object );
     }, onProgress, onError );
 */
-    // grabby tree lowpoly
-    let grabbytreediff = (new THREE.TextureLoader().load( 'models/maps/grabbytree_DiffM.jpg' ));
-    let grabbytreenorm = (new THREE.TextureLoader().load( 'models/maps/grabbytree_NM.jpg' ));
-    let grabbytreemat = new THREE.MeshPhongMaterial( {
-        map: grabbytreediff,
-        normalMap: grabbytreenorm,
-        shininess: 85.0,
-        specular: new THREE.Color( 0.2,0.1,0.2 )
-    });
-    let grabbytreeloader = new THREE.FBXLoader( manager );
-    grabbytreeloader.load( 'models/grabbytree.FBX', function( object ) {
+    //TODO grabbyTree til klasse
+    // (position) x y z,(scale) x y z, (rotation) x y z
+    grabbyTree (0,1.15,0,1,1,1,0,0,0);
 
-        let grabbytreegeo = object.children[0];
-        grabbytreegeo.material = grabbytreemat;
-        grabbytreegeo.castShadow = true;
-        grabbytreegeo.receiveShadow = true;
-        grabbytreegeo.position.set(0.0,1.15,0.0);
-
-
-        for(let i=0;i<5;i++){
-            let treeball = new Treeball(grabbytreegeo, clock);
-            animateobjects.push(treeball);
-            scene.add(treeball);
-        }
-
-        scene.add( object );
-    }, onProgress, onError );
+/**
+    let grabbyTree = new GrabbyTree();
+    grabbyTree.children[0].position.set(0.0,1.15,0.0);
+    scene.add(grabbyTree);
+*/
 
 
     let terrengsidediff = (new THREE.TextureLoader().load( 'models/maps/terrain_sides-DiffM.jpg' ));
@@ -157,6 +137,7 @@ function init() {
 
 
     //skalle
+    //TODO skalle til klasse
 
     let skalleloader = new THREE.FBXLoader( manager );
     skalleloader.load( 'models/skallemesh.FBX', function( object ) {
@@ -218,8 +199,9 @@ function init() {
 
 
     //vann
+    //TODO vann til klasse eller funksjon utenfor scenegraph
 
-    cubeCam = new THREE.CubeCamera(1,100000, 128);
+    cubeCam = new THREE.CubeCamera(1,1000, 128);
     scene.add(cubeCam);
 
     let vanngeometry = new THREE.BoxGeometry( 9.69, 1, 19.4 );
@@ -231,6 +213,7 @@ function init() {
 
 
     //akvarieglass
+    //TODO akvarieglass til klasse
 
     let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
     let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture, opaque:0.5} );
@@ -278,23 +261,24 @@ function init() {
 //    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
-    //controls = new THREE.OrbitControls( camera, renderer.domElement );
-    //controls.target.set( 0.0, 0.0, 0.0 );
-    //controls.update();
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls.target.set( 0.0, 0.0, 0.0 );
+    controls.update();
 
+
+    //TODO Å kunne skifte mellom kameramodus
     //first person control (flying) - husk å inkludér den utkommenterte linjen i render()
+    /**
     controls = new THREE.FirstPersonControls(camera);
     controls.movementSpeed = 5;
     controls.lookSpeed = 0.1;
     controls.animate = function(){ this.update(clock.getDelta()) };
     animateobjects.push(controls);
-
+*/
 
 
 
     window.addEventListener( 'resize', onWindowResize, false );
-
-
 
     setupLights();
 
@@ -327,57 +311,6 @@ function init() {
 } //init
 
 
-
-function setupLights() {
-    "use strict";
-    //Overall light:
-
-    let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.35);
-    hemlight.position.set(0, 1, 0);
-    scene.add(hemlight);
-
-    //Directional Light:
-
-    let dirlight = new THREE.DirectionalLight(0xffffff, 1.5);
-    dirlight.position.set(12.0, 3.0, 20.0);
-    dirlight.castShadow = true;
-    scene.add(dirlight);
-
-    let dirlightTarget = new THREE.Object3D();
-    dirlightTarget.position.set(0.0,1.0,0,0);
-    scene.add(dirlightTarget);
-    dirlight.target = dirlightTarget;
-    scene.add(dirlight.target);
-
-    //Dirlight shadowmap settings
-
-    dirlight.shadow.camera.left = -13;
-    dirlight.shadow.camera.right = 13;
-    dirlight.shadow.camera.top = 3;
-    dirlight.shadow.camera.bottom = -3;
-
-    dirlight.shadow.camera.near = 10.0;
-    dirlight.shadow.camera.far = 35.0;
-    dirlight.shadow.mapSize.width = 2048;
-    dirlight.shadow.mapSize.height = 1024;
-
-    //dirlight animasjon:
-    dirlightTarget.animate = function () { this.rotation.y -= 0.01; this.position.z+=0.05 * Math.sin(this.rotation.y); }
-    animateobjects.push(dirlightTarget);
-
-    //toggle shadowMapHelper:
-    shadowHelper(dirlight);
-
-
-}
-
-function shadowHelper(dirlight) {
-    "use strict";
-    //Lys/skygge-hjelper for directional
-    let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
-    scene.add( shadowhelper );
-}
-
 function addGrid(){
     "use strict";
 
@@ -394,7 +327,7 @@ function makeFog() {
     scene.fog = fog;
 }
 
-//sphere for test av skygger
+//en midlertidig sphere for test av skygger
 function testSphere(){
     "use strict";
 
