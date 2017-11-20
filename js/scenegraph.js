@@ -53,149 +53,18 @@ function init() {
     // MODELS:
 
     //terreng
-    //TODO terreng til klasse
 
-    let terrengdiff = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-DiffM.jpg' ));
-    let terrengnorm = (new THREE.TextureLoader().load( 'models/maps/tunneled_terrain02-NM.jpg' ));
+    setupTerreng();
+    setupTerrengsider();
+    setupAkvarieglass();
 
-    let terrengmat = new THREE.MeshPhongMaterial( {
-        color: new THREE.Color(0.67, 1.0, 0.67), //litt grønntinting av fargen
-        map: terrengdiff,
-        normalMap: terrengnorm
-    });
+    //PROPS:
 
-    let terrengloader = new THREE.FBXLoader( manager );
-    terrengloader.load( 'models/terrain_resculpt.FBX', function( object ) {
-
-        let terrenggeo = object.children[0];
-        terrenggeo.material = terrengmat;
-        terrenggeo.castShadow = true;
-        terrenggeo.receiveShadow = true;
-
-        scene.add( object );
-    }, onProgress, onError );
-
-    /**
-    //tree1
-
-    let tree1diff = (new THREE.TextureLoader().load( 'models/maps/tree1_DiffM.jpg' ));
-    let tree1norm = (new THREE.TextureLoader().load( 'models/maps/tree1_NM.jpg' ));
-
-    let tree1mat = new THREE.MeshPhongMaterial( {
-        map: tree1diff,
-        normalMap: tree1norm
-    });
-
-
-    let tree1loader = new THREE.FBXLoader( manager );
-    tree1loader.load( 'models/tree1_med.FBX', function( object ) {
-
-        let tree1geo = object.children[0];
-        tree1geo.material = tree1mat;
-        tree1geo.castShadow = true;
-        tree1geo.receiveShadow = true;
-
-        tree1geo.position.set(0.0,1,0.0);
-        tree1geo.scale.set(0.5,0.5,0.5);
-
-        //object.mixer = new THREE.AnimationMixer( object );
-        //mixers.push( object.mixer );
-
-        //var action = object.mixer.clipAction( object.animations[ 0 ] );
-        //action.play();
-
-        scene.add( object );
-    }, onProgress, onError );
-*/
-    //TODO grabbyTree til klasse
-    // (position) x y z,(scale) x y z, (rotation) x y z
     grabbyTree (0,1.15,0,1,1,1,0,0,0);
+    setupSkalle((0,0,0,1,1,1,0,0,0));
+    //setupTree1 (0,1.0,0,0.5,0.5,0.5,0,0,0);
 
-/**
-    let grabbyTree = new GrabbyTree();
-    grabbyTree.children[0].position.set(0.0,1.15,0.0);
-    scene.add(grabbyTree);
-*/
-
-
-    let terrengsidediff = (new THREE.TextureLoader().load( 'models/maps/terrain_sides-DiffM.jpg' ));
-    let terrengsideloader = new THREE.FBXLoader( manager );
-    terrengsideloader.load( 'models/terrain_resculpt-sides.FBX', function( object ) {
-        let terrengsidegeo = object.children[0]
-
-        let terrengsidemat = new THREE.MeshPhongMaterial( {
-            color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
-            map: terrengsidediff,
-        });
-
-        terrengsidegeo.material = terrengsidemat;
-        terrengsidegeo.receiveShadow = false;
-        terrengsidegeo.castShadow = false;
-
-        scene.add( object );
-    }, onProgress, onError );
-
-
-    //skalle
-    //TODO skalle til klasse
-
-    let skalleloader = new THREE.FBXLoader( manager );
-    skalleloader.load( 'models/skallemesh.FBX', function( object ) {
-
-        let skallegeo = object.children[0];
-        skallegeo.castShadow = true;
-        skallegeo.receiveShadow = true;
-
-        /**
-
-        let vshader = loadFileAJAX("shaders/skull_vshader.glsl");
-        let fshader = loadFileAJAX("shaders/skull_fshader.glsl");
-
-        skallegeo.material = new THREE.ShaderMaterial({
-            vertexShader: vshader,
-            fragmentShader: fshader
-        });
-        */
-
-
-        /**
-         let vshader = loadFileAJAX("shaders/meshphong_vert.glsl");
-         let fshader = loadFileAJAX("shaders/meshphong_frag.glsl");
-
-         skallegeo.material = new THREE.ShaderMaterial({
-
-           vertexShader: vshader,
-           fragmentShader: fshader
-           //attributes: {},
-           //uniforms: uniforms,
-           //lights:true
-           //fog:true
-        });
-         //skallegeo.material.lights = true;
-         */
-
-        scene.add( object );
-    }, onProgress, onError );
-
-
-
-
-    /**
-    let wallbridgeloader = new THREE.FBXLoader( manager );
-    wallbridgeloader.load( 'models/wall-bridge-mockups.FBX', function( object ) {
-        let wallbridgegeo1 = object.children[0];
-        let wallbridgegeo2 = object.children[1]
-        wallbridgegeo1.receiveShadow = true;
-        wallbridgegeo2.castShadow = true;
-        wallbridgegeo1.receiveShadow = true;
-        wallbridgegeo2.castShadow = true;
-
-        scene.add( object );
-    }, onProgress, onError );
-*/
-
-
-
+    setupBird();
 
 
     //vann
@@ -212,38 +81,9 @@ function init() {
     scene.add( vann );
 
 
-    //akvarieglass
-    //TODO akvarieglass til klasse
 
-    let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
-    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture, opaque:0.5} );
-    akvariematerial.transparent = true;
 
-    let akvarieloader = new THREE.FBXLoader( manager );
-    akvarieloader.load( 'models/akvariemesh.FBX', function( object ) {
 
-        let akvariemodell = object.children[0];
-        akvariemodell.castShadow = false;
-        akvariemodell.receiveShadow = false;
-        akvariemodell.material = akvariematerial;
-
-        scene.add( object );
-    }, onProgress, onError );
-
-/**
-    //TODO fikse problem med dybde, gress blir usynlig utenfor glasset, problemet virker ut til å være depthbuffer pga om vi setter depthwriter: false på glasset kan en se gresset gjennom glasset,
-    //men gresset blir da ikke påvirket av glasset i det hele tatt og ser unaturlig ut.
-    //Billboard for gress
-    var spriteMap = new THREE.TextureLoader().load( 'models/grass/grass.png' );
-
-    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff} );
-
-    var grassSprite = new THREE.Sprite( spriteMaterial );
-    grassSprite.scale.set(1, 1, 1)
-    grassSprite.position.set(2,2,2);
-
-    scene.add( grassSprite );
-*/
 
     //renderer
 
@@ -288,22 +128,11 @@ function init() {
     //toggle sphere for testing av oppdatering av shadowmaps
     //testSphere();
 
-    let bird = new Bird();
-    animateobjects.push(bird);
-    scene.add(bird);
-
-    for(let i=0;i<5;i++){
-        let treeball = new Treeball(bird, clock);
-        animateobjects.push(treeball);
-        scene.add(treeball);
-    }
-
-
 
     //toggle tåke i scenen
     makeFog();
 
-    //legger til en skybox i scenen
+    //legger til skybox i scenen
     scene.add(new Skybox());
 
     animate();
@@ -311,35 +140,12 @@ function init() {
 } //init
 
 
-function addGrid(){
-    "use strict";
-
-     let gridHelper = new THREE.GridHelper( 28, 28, 0x303030, 0x303030 );
-     gridHelper.position.set( 0, - 0.04, 0 );
-     scene.add( gridHelper );
-}
-
 function makeFog() {
     "use strict";
 
     let fog = new THREE.Fog("#efa3a5", 15, 35);
     fog.name = "pink-ish fog";
     scene.fog = fog;
-}
-
-//en midlertidig sphere for test av skygger
-function testSphere(){
-    "use strict";
-
-    let testspheregeo = new THREE.SphereGeometry(1.0,24,24);
-    let testspheremat = new THREE.MeshPhongMaterial( {color: new THREE.Color(0.1,0.3,0.1) } );
-    let testsphere = new THREE.Mesh(testspheregeo, testspheremat);
-    testsphere.position.set(2.0,3.0,5.0);
-    testsphere.castShadow = true;
-    scene.add(testsphere);
-
-    testsphere.animate = function () { this.rotation.y -= 0.01; this.position.y+=0.01 * Math.sin(this.rotation.y); }
-    animateobjects.push(testsphere);
 }
 
 function onWindowResize() {
