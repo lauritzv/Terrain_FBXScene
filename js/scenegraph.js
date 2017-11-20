@@ -21,6 +21,9 @@ function init() {
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
     scene = new THREE.Scene();
 
+    cubeCam = new THREE.CubeCamera(1,1000, 128);
+    scene.add(cubeCam);
+
     colorLooper = new ColorLooper(clock);
 
     scene.background = new THREE.TextureLoader().load( 'models/maps/grad_bg.jpg' );
@@ -66,20 +69,7 @@ function init() {
 
     setupBird();
 
-
-    //vann
-    //TODO vann til klasse eller funksjon utenfor scenegraph
-
-    cubeCam = new THREE.CubeCamera(1,1000, 128);
-    scene.add(cubeCam);
-
-    let vanngeometry = new THREE.BoxGeometry( 9.69, 1, 19.4 );
-    let vannmaterial = new THREE.MeshPhongMaterial( {color: 0xffaadd/*0x6bc8c8*/, envMap: cubeCam.renderTarget, specular: 0.8, opacity: 0.5, reflectivity: 0.8 } );
-    vannmaterial.transparent = true;
-    let vann = new THREE.Mesh( vanngeometry, vannmaterial);
-    vann.position.set(0.0,-0.39,-0.0);
-    scene.add( vann );
-
+    setupWater();
 
 
 
