@@ -1,7 +1,8 @@
 let container, controls;
 let camera, scene, renderer, light, cubeCam;
 
-let colorLooper;
+let colorLooper, vannNM;
+let textureOffset = 0.0;
 let clock = new THREE.Clock();
 
 let mixers = [];
@@ -152,6 +153,7 @@ function animate() {
     requestAnimationFrame( animate );
 
     scene.fog.color = colorLooper.getNextColor();
+    vannNM.offset.set(0, clock.getElapsedTime() % 20 / 20);
 
 
     for (let i = 0; i< animateobjects.length;i++){
