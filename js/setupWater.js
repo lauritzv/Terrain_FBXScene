@@ -1,6 +1,6 @@
 function setupWater() {
     "use strict";
-    vannNM = new THREE.TextureLoader().load('models/maps/water_NM.jpg');
+    let vannNM = new THREE.TextureLoader().load('models/maps/water_NM.jpg');
 
     vannNM.wrapS = THREE.RepeatWrapping;
     vannNM.wrapT = THREE.RepeatWrapping;

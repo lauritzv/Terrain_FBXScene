@@ -1,8 +1,7 @@
 let container, controls;
 let camera, scene, renderer, light, cubeCam;
 
-let colorLooper, vannNM;
-let textureOffset = 0.0;
+let colorLooper;
 let clock = new THREE.Clock();
 
 let mixers = [];
