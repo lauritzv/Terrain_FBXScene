@@ -65,16 +65,12 @@ function init() {
     //PROPS:
 
     grabbyTree (0,1.15,0,1,1,1,0,0,0);
-    setupSkalle((0,0,0,1,1,1,0,0,0));
+    setupSkalle(0,0,0,1,1,1,0,0,0);
     //setupTree1 (0,1.0,0,0.5,0.5,0.5,0,0,0);
 
     setupBird();
 
     setupWater();
-
-
-
-
 
     //renderer
 
@@ -153,8 +149,6 @@ function animate() {
     requestAnimationFrame( animate );
 
     scene.fog.color = colorLooper.getNextColor();
-    vannNM.offset.set(0, clock.getElapsedTime() % 20 / 20);
-
 
     for (let i = 0; i< animateobjects.length;i++){
         animateobjects[i].animate();

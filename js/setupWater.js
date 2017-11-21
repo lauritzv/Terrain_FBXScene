@@ -1,14 +1,16 @@
-
 function setupWater() {
     "use strict";
     vannNM = new THREE.TextureLoader().load('models/maps/water_NM.jpg');
+
     vannNM.wrapS = THREE.RepeatWrapping;
     vannNM.wrapT = THREE.RepeatWrapping;
     vannNM.mapping = THREE.UVMapping;
-    vannNM.repeat.x = 30;
-    vannNM.repeat.y = 20;
-    console.log(vannNM);
-    vannNM.needsUpdate = true;
+    vannNM.repeat.x = 15;
+    vannNM.repeat.y = 10;
+    vannNM.animate = function () {
+        vannNM.offset.set(0, clock.getElapsedTime() % 20 / 20);
+    }
+    animateobjects.push(vannNM);
     let vanngeometry = new THREE.BoxGeometry(9.69, 1, 19.4);
     let vannmaterialPhong = new THREE.MeshPhongMaterial({
         color: new THREE.Color(1.0, 0.66, 0.44),
@@ -49,4 +51,7 @@ function setupWater() {
     vann.material.needsUpdate = true;
     vann.position.set(0.0, -0.39, -0.0);
     scene.add(vann);
+
+
 }
+
