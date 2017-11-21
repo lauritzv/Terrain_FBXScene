@@ -46,7 +46,7 @@ function setupTerrengsider(){
 function setupAkvarieglass(){
     "use strict";
     let akvarietexture = (new THREE.TextureLoader().load( 'models/maps/akvarie_opac.jpg' ));
-    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture, opaque:0.5} );
+    let akvariematerial = new THREE.MeshBasicMaterial( { color: new THREE.Color(107.0/255, 200.0/255, 200.0/255), alphaMap: akvarietexture, opacity:0.5} );
     akvariematerial.transparent = true;
 
     let akvarieloader = new THREE.FBXLoader( manager );
