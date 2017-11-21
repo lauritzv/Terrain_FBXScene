@@ -7,9 +7,9 @@ function setupSkalle(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
         skallegeo.castShadow = true;
         skallegeo.receiveShadow = true;
 
-        skallegeo.position.set(posx,posy,posz);
+//        skallegeo.position.set(posx,posy,posz);
         skallegeo.scale.set(scax,scay,scaz);
-        skallegeo.rotateX(rotx); skallegeo.rotateY(roty); skallegeo.rotateZ(rotz);
+//        skallegeo.rotateX(rotx); skallegeo.rotateY(roty); skallegeo.rotateZ(rotz);
 
         /**
 
