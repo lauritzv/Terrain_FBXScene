@@ -1,13 +1,20 @@
 function setupSkalle(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
     "use strict";
+
+    let skallediff = (new THREE.TextureLoader().load( 'models/maps/skalle03_DiffM.jpg' ));
+    let skallemat = new THREE.MeshPhongMaterial( {
+        map: skallediff
+    });
+
     let skalleloader = new THREE.FBXLoader( manager );
-    skalleloader.load( 'models/skallemesh.FBX', function( object ) {
+    skalleloader.load( 'models/skalle_03.FBX', function( object ) {
 
         let skallegeo = object.children[0];
         skallegeo.castShadow = true;
         skallegeo.receiveShadow = true;
+        skallegeo.material = skallemat;
 
-//        skallegeo.position.set(posx,posy,posz);
+        skallegeo.position.set(posx,posy,posz);
         skallegeo.scale.set(scax,scay,scaz);
 //        skallegeo.rotateX(rotx); skallegeo.rotateY(roty); skallegeo.rotateZ(rotz);
 

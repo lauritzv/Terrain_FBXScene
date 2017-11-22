@@ -64,7 +64,7 @@ function init() {
     //PROPS:
 
     grabbyTree (0,1.15,0,1,1,1,0,0,0);
-    setupSkalle(0,0,0,1,1,1,0,0,0);
+    setupSkalle(2.0,-0.1,-6.0,1,1,1,0,0,0);
     //setupTree1 (0,1.0,0,0.5,0.5,0.5,0,0,0);
 
     //setupBird();
