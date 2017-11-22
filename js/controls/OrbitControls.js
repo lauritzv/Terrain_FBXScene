@@ -235,6 +235,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	};
 
+	this.animate = function() {
+
+	};
+
 	//
 	// internals
 	//

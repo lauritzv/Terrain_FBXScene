@@ -67,7 +67,7 @@ function init() {
     setupSkalle(0,0,0,1,1,1,0,0,0);
     //setupTree1 (0,1.0,0,0.5,0.5,0.5,0,0,0);
 
-    setupBird();
+    //setupBird();
 
     setupWater();
 
@@ -87,20 +87,17 @@ function init() {
 //    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
+    /**
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.target.set( 0.0, 0.0, 0.0 );
     controls.update();
+     */
 
-
-    //TODO Å kunne skifte mellom kameramodus
-    //first person control (flying) - husk å inkludér den utkommenterte linjen i render()
-    /**
     controls = new THREE.FirstPersonControls(camera);
     controls.movementSpeed = 5;
-    controls.lookSpeed = 0.1;
+    controls.lookSpeed = 0.2;
     controls.animate = function(){ this.update(clock.getDelta()) };
-    animateobjects.push(controls);
-*/
+
 
 
 
@@ -147,6 +144,8 @@ function animate() {
 
     requestAnimationFrame( animate );
 
+    controls.animate();
+
     scene.fog.color = colorLooper.getNextColor();
 
     for (let i = 0; i< animateobjects.length;i++){
@@ -167,7 +166,6 @@ function animate() {
 
 
 function render() {
- //   console.log(camera.position.x +" "+camera.position.y +" "+camera.position.z);
 
     cubeCam.update( renderer, scene );
 
