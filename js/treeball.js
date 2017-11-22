@@ -9,9 +9,8 @@ class Treeball{
 
 
 
-        this.spriteMaterial = new THREE.SpriteMaterial( { map: spriteArray[0], color: 0xffffff, fog:true } );
+        this.spriteMaterial = new THREE.SpriteMaterial( { map: spriteArray[0], color: 0xffffff, fog:true, transparent:true } );
         //this.spriteMaterial.needsUpdate = true;
-
         this.sprite = new THREE.Sprite( this.spriteMaterial );
         this.sprite.scale.set(0.1,0.1);
 
@@ -68,6 +67,9 @@ class Treeball{
             this.spriteMaterial.map = spriteArray[3];
             this.spriteMaterial.rotation = Math.PI * this.randSeed;
         }
+
+        //pulserende fade/opacity fo treeball sprite
+        this.spriteMaterial.opacity = 1 + Math.sin(new Date().getTime() * .0025);
     }
 
 

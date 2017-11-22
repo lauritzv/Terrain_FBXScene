@@ -2,12 +2,20 @@
             "use strict";
             //Overall light:
 
+
             let hemlight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.35);
             hemlight.position.set(0, 1, 0);
             scene.add(hemlight);
 
-            //Directional Light:
+            //PointLight for grabbyTree
+            let pLight = new THREE.PointLight( 0x00eeee, 3 , 0.5 );
+            pLight.position.set( 0, 2, 0 );
+            pLight.animate = function () {this.intensity = 1 + Math.sin(new Date().getTime() * .0025); };
+            animateobjects.push(pLight);
+            scene.add( pLight );
 
+
+            //Directional Light:
             let dirlight = new THREE.DirectionalLight(0xffffff, 1.5);
             dirlight.position.set(12.0, 3.0, 20.0);
             dirlight.castShadow = true;
@@ -32,7 +40,7 @@
             dirlight.shadow.mapSize.height = 1024;
 
             //dirlight animasjon:
-            dirlightTarget.animate = function () { this.rotation.y -= 0.01; this.position.z+=0.05 * Math.sin(this.rotation.y); }
+            dirlightTarget.animate = function () { this.rotation.y -= 0.01; this.position.z+=0.05 * Math.sin(this.rotation.y); };
             animateobjects.push(dirlightTarget);
 
             //toggle shadowMapHelper:
