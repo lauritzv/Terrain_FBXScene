@@ -8,7 +8,7 @@
             scene.add(hemlight);
 
             //PointLight for grabbyTree
-            let pLight = new THREE.PointLight( 0x00eeee, 3 , 0.5 );
+            let pLight = new THREE.PointLight( 0x356664, 5 , 5 );
             pLight.position.set( 0, 2, 0 );
             pLight.animate = function () {this.intensity = 1 + Math.sin(new Date().getTime() * .0025); };
             animateobjects.push(pLight);
