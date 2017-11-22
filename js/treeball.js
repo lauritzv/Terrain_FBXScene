@@ -79,7 +79,7 @@ class Treeball{
      */
     move(){
         this.position.copy(this.tree.position);
-        this.translateY(this.treeHeight);
+        this.translateY(this.treeHeight*0.85);
 
         let vector = this.curve.getPoint((clock.getElapsedTime() % 5) / 5);
         this.position.addScaledVector(vector, 0.1);
