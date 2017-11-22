@@ -1,5 +1,5 @@
+let spriteArray = [];
 function grabbyTree (posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
-//TODO omskrive grabbyTree til klasse som returnerer noe som kan brukes
 
         let grabbytreediff = (new THREE.TextureLoader().load( 'models/maps/grabbytree_DiffM.jpg' ));
         let grabbytreenorm = (new THREE.TextureLoader().load( 'models/maps/grabbytree_NM.jpg' ));
@@ -21,10 +21,21 @@ function grabbyTree (posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
             grabbytreegeo.scale.set(scax,scay,scaz);
             grabbytreegeo.rotateX(rotx); grabbytreegeo.rotateY(roty); grabbytreegeo.rotateZ(rotz);
 
-             for(let i=0;i<5;i++){
-                let treeball = new Treeball(grabbytreegeo, clock);
-                animateobjects.push(treeball);
-                scene.add(treeball);
+            let orbmanager = new THREE.LoadingManager();
+
+            for (let y=0; y<4;y++){
+                this.spritename = "models/maps/ball-lightning-seq/ball-lightning-seq"+(y+1)+".png";
+                console.log(this.spritename);
+                spriteArray.push(new THREE.TextureLoader( orbmanager ).load(this.spritename));
+            }
+
+            orbmanager.onLoad = function () {
+                "use strict";
+                for(let i=0;i<5;i++){
+                    let treeball = new Treeball(grabbytreegeo ,spriteArray);
+                    animateobjects.push(treeball);
+                    scene.add(treeball);
+                }
             }
 
             scene.add(object);
