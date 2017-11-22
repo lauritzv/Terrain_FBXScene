@@ -1,14 +1,16 @@
 function setupBird(){
+
     "use strict";
     let bird = new Bird();
     animateobjects.push(bird);
     scene.add(bird);
-
+/**
     for(let i=0;i<5;i++){
         let treeball = new Treeball(bird, clock);
         animateobjects.push(treeball);
         scene.add(treeball);
     }
+ */
 }
 
 function addGrid(){
@@ -34,20 +36,25 @@ function testSphere(){
     animateobjects.push(testsphere);
 }
 
-function testSprites(){
+function testplane(){
     "use strict";
-    /**
-     //TODO fikse problem med dybde, gress blir usynlig utenfor glasset, problemet virker ut til å være depthbuffer pga om vi setter depthwriter: false på glasset kan en se gresset gjennom glasset,
-     //men gresset blir da ikke påvirket av glasset i det hele tatt og ser unaturlig ut.
-     //Billboard for gress
-     var spriteMap = new THREE.TextureLoader().load( 'models/grass/grass.png' );
+    let diff = (new THREE.TextureLoader().load( 'models/maps/water_NM.jpg', function (map) {
+        map.wrapS = THREE.RepeatWrapping;
+        map.wrapT = THREE.RepeatWrapping;
+        map.anisotropy = 4;
+        map.repeat.set( 5, 10 );
+    } ));
+    let geo = new THREE.PlaneGeometry(2,4,1,1);
+    let mat = new THREE.MeshBasicMaterial( { map: diff } );
 
-     var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff} );
+    diff.offset(THREE.Vector2(0.5,1.0));
+    map.needsUpdate=true;
 
-     var grassSprite = new THREE.Sprite( spriteMaterial );
-     grassSprite.scale.set(1, 1, 1)
-     grassSprite.position.set(2,2,2);
+    let testplane = new THREE.Mesh(geo, mat);
 
-     scene.add( grassSprite );
-     */
+    testplane.position.set(2.0,3.0,5.0);
+    scene.add(testplane);
+
+//    testsphere.animate = function () { this.rotation.y -= 0.01; this.position.y+=0.01 * Math.sin(this.rotation.y); }
+//    animateobjects.push(testsphere);
 }

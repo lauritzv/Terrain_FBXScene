@@ -9,7 +9,7 @@ class Treeball{
 
 
 
-        this.spriteMaterial = new THREE.SpriteMaterial( { map: spriteArray[0], color: 0xffffff } );
+        this.spriteMaterial = new THREE.SpriteMaterial( { map: spriteArray[0], color: 0xffffff, fog:true } );
         //this.spriteMaterial.needsUpdate = true;
 
         this.sprite = new THREE.Sprite( this.spriteMaterial );
