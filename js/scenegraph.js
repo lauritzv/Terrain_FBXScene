@@ -83,7 +83,7 @@ function init() {
     container.appendChild( renderer.domElement );
 
 
-    camera.position.set(-5,5,-5);
+    camera.position.set(-10,4,-5);
 //    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
