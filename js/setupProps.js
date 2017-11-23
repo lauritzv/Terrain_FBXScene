@@ -49,36 +49,45 @@ function setupSkalle(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
         scene.add( object );
     }, onProgress, onError );
 }
-/**
-function setupWalls(){
+
+function setupWall(posx,posy,posz){
     "use strict";
-    
-     let wallbridgeloader = new THREE.FBXLoader( manager );
-     wallbridgeloader.load( 'models/wall-bridge-mockups.FBX', function( object ) {
-        let wallbridgegeo1 = object.children[0];
-        let wallbridgegeo2 = object.children[1]
-        wallbridgegeo1.receiveShadow = true;
-        wallbridgegeo2.castShadow = true;
-        wallbridgegeo1.receiveShadow = true;
-        wallbridgegeo2.castShadow = true;
+
+    let walldiff = (new THREE.TextureLoader().load( 'models/maps/wall_DiffM.jpg' ));
+    let wallnorm = (new THREE.TextureLoader().load( 'models/maps/wall_NM.jpg' ));
+
+    let wallmat = new THREE.MeshPhongMaterial( {
+        map: walldiff,
+        normalMap: wallnorm
+    });
+
+     let wallloader = new THREE.FBXLoader( manager );
+     wallloader.load( 'models/wall_model.FBX', function( object ) {
+
+         let wallgeo = object.children[0];
+        wallgeo.material = wallmat;
+        wallgeo.receiveShadow = true;
+        wallgeo.castShadow = true;
+
+        wallgeo.position.set(posx,posy,posz);
 
         scene.add( object );
     }, onProgress, onError );
 }
-
-function setupTree1(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
+/**
+function setupTree1(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz) {
     "use strict";
 
-     //tree1
+    //tree1
 
-     let tree1diff = (new THREE.TextureLoader().load( 'models/maps/tree1_DiffM.jpg' ));
-     let tree1norm = (new THREE.TextureLoader().load( 'models/maps/tree1_NM.jpg' ));
+    let tree1diff = (new THREE.TextureLoader().load('models/maps/tree1_DiffM.jpg'));
+    let tree1norm = (new THREE.TextureLoader().load('models/maps/tree1_NM.jpg'));
 
-     let tree1mat = new THREE.MeshPhongMaterial( {
+    let tree1mat = new THREE.MeshPhongMaterial({
         map: tree1diff,
         normalMap: tree1norm
     });
-
+}
 
      let tree1loader = new THREE.FBXLoader( manager );
      tree1loader.load( 'models/tree1_med.FBX', function( object ) {
