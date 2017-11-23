@@ -52,6 +52,5 @@ function setupWater() {
     vann.position.set(0.0, -0.39, -0.0);
     scene.add(vann);
 
-
 }
 

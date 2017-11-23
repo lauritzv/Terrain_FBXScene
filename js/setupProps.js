@@ -40,6 +40,7 @@ function setupSkalle(posx,posy,posz,scax,scay,scaz,rotx,roty,rotz){
          */
 
         scene.add( object );
+        objects.push(skallegeo);
     }, onProgress, onError );
 }
 /**

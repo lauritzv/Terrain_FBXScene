@@ -17,8 +17,8 @@ function setupTerreng(){
         terrenggeo.material = terrengmat;
         terrenggeo.castShadow = true;
         terrenggeo.receiveShadow = true;
-
         scene.add( object );
+        objects.push(terrenggeo);
     }, onProgress, onError );
 }
 
@@ -28,7 +28,7 @@ function setupTerrengsider(){
     let terrengsidediff = (new THREE.TextureLoader().load( 'models/maps/terrain_sides-DiffM.jpg' ));
     let terrengsideloader = new THREE.FBXLoader( manager );
     terrengsideloader.load( 'models/terrain_resculpt-sides.FBX', function( object ) {
-        let terrengsidegeo = object.children[0]
+        let terrengsidegeo = object.children[0];
 
         let terrengsidemat = new THREE.MeshPhongMaterial( {
             color: new THREE.Color(170.0/255, 255.0/255, 170.0/255), //litt grønntinting av fargen
