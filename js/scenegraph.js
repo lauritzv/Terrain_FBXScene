@@ -88,17 +88,17 @@ function init() {
 //    camera.rotation.set(0.0,-0.5,0.0);
 
     //orbit control
-    /**
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.target.set( 0.0, 0.0, 0.0 );
     controls.update();
-     */
 
+    //first person control
+    /**
     controls = new THREE.FirstPersonControls(camera);
     controls.movementSpeed = 5;
     controls.lookSpeed = 0.2;
     controls.animate = function(){ this.update(clock.getDelta()) };
-
+    */
 
 
 
