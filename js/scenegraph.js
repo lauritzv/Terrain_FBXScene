@@ -65,7 +65,6 @@ function init() {
 
     grabbyTree (0,1.15,0,1,1,1,0,0,0);
     setupSkalle(2.0,-0.1,-6.0,1,1,1,0,0,0);
-    //setupTree1 (0,1.0,0,0.5,0.5,0.5,0,0,0);
     setupWall(0.95,-0.6,1.6);
 
     //setupBird();
@@ -85,7 +84,8 @@ function init() {
 
 
     camera.position.set(-10,4,-5);
-//    camera.rotation.set(0.0,-0.5,0.0);
+
+    //Bestemmer hvilken control som skal være default
 
     //orbit control
     controls = new THREE.OrbitControls( camera, renderer.domElement );
