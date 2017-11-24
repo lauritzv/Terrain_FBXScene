@@ -58,7 +58,9 @@ function setupWall(posx,posy,posz){
 
     let wallmat = new THREE.MeshPhongMaterial( {
         map: walldiff,
-        normalMap: wallnorm
+        normalMap: wallnorm,
+        shininess: 04.0,
+        specular: new THREE.Color( 0.0,0.0,0.0 )
     });
 
      let wallloader = new THREE.FBXLoader( manager );

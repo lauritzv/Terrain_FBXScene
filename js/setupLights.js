@@ -14,6 +14,12 @@
             animateobjects.push(pLight);
             scene.add( pLight );
 
+            //PointLight for wall
+            // (farge, intensitet, avstand)
+            let pLightw = new THREE.PointLight( 0xffffff, 0.40 , 1.6 );
+            pLightw.position.set( -0.95,1.5,-2.0 );
+            scene.add( pLightw );
+
 
             //Directional Light:
             let dirlight = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -46,6 +52,9 @@
             //toggle shadowMapHelper:
             //shadowHelper(dirlight);
 
+            //toggle pLightwHelper
+            //pLightwHelper(pLightw);
+
         }
 
         function shadowHelper(dirlight) {
@@ -53,4 +62,10 @@
             //Lys/skygge-hjelper for directional
             let shadowhelper = new THREE.CameraHelper(dirlight.shadow.camera);
             scene.add( shadowhelper );
+        }
+
+        function pLightwHelper(pLightw){
+            "use strict";
+            let pLightwHelper = new THREE.PointLightHelper(pLightw,0.2);
+            scene.add( pLightwHelper );
         }
